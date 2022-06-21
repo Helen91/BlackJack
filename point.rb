@@ -1,11 +1,17 @@
 module Point
-  def games_point(player_cards)
-    player_cards.map do |card|
-      if card.to_i == 0
-        10
+  def games_point(card, current_points)
+    if card[0] == "A"
+      sum = current_points + 10
+
+      if sum > 21
+        1
       else
-        card.to_i
+        10
       end
-    end.sum
+    elsif card.to_i.zero?
+      10
+    else
+      card.to_i
+    end
   end
 end
