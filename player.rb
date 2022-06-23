@@ -1,16 +1,15 @@
-require "./point.rb"
+require './point'
 
 class Player
-
   include Point
 
-  attr_reader :cards
-  attr_accessor :balance, :points
+  attr_reader :cards, :points, :name
+  attr_accessor :balance
 
-  def initialize(balance)
+  def initialize(balance, name = 'Дилер')
     @balance = balance
-    @points = 0
-    @cards = []
+    @name = name
+    start_game
   end
 
   def lose?
@@ -19,7 +18,11 @@ class Player
 
   def add_card(card)
     cards << card
-    self.points += games_point(card, points)
+    @points += games_point(card, points)
   end
 
+  def start_game
+    @points = 0
+    @cards = []
+  end
 end

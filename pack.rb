@@ -1,3 +1,5 @@
+require './card'
+
 class Pack
   attr_reader :pack
 
@@ -7,7 +9,7 @@ class Pack
             2♣ 3♣ 4♣ 5♣ 6♣ 7♣ 8♣ 9♣ 10♣ J♣ Q♣ K♣ A♣].freeze
 
   def initialize
-    @pack = PACK.shuffle
+    @pack = PACK.map { |c| Card.new(c[0], c[-1]) }.shuffle
   end
 
   def give_cart

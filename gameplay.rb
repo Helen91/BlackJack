@@ -1,100 +1,79 @@
-# 2 each |♣| (4 раза)
-# 4 balance
-# 5 if_else (4 раза )
+require './pack'
+require './point'
+require './player'
 
-require "./pack.rb"
-require "./point.rb"
-require "./player.rb"
+puts 'Напишите свое имя'
+name = gets.chomp
 
 game_pack = Pack.new
-player = Player.new(100)
+player = Player.new(100, name)
 diler = Player.new(100)
 
 loop do
-#5 if_else
- if player.balance <= 0
-  puts "end"
-  break
- end
+  player.start_game
+  diler.start_game
 
-  #break(puts "игра закончена") if plaer_balance <= 0
-  puts "Игра началась"
+  if player.balance <= 0
+    puts 'Игра окончена'
+    break
+  end
+  puts '-' * 70
+  puts 'Игра началась'
 
-  # puts "Напишите свое имя"
-  # name = gets.chomp
-   bet = 10
-   #4balance
-   player.balance -= bet
-   puts "Cтавка на сумму #{bet} принята, у вас осталось #{player.balance}"
-   #bank = [bet]
+  bet = 10
+  player.balance -= bet
+  puts "Cтавка на сумму #{bet}$ принята, у вас осталось #{player.balance}$."
 
   2.times { player.add_card(game_pack.give_cart) }
-  #2each
-  player.cards.each { |c| print "|" + c + "|"}
+  puts player.cards
+  puts "Cумма ваших очков = #{player.points}."
 
-  puts "\nCумма ваших очков = #{player.points}"
-
-  puts "Дилер взял 2 карты |*||*|"
   2.times { diler.add_card(game_pack.give_cart) }
+  puts "#{diler.name} взял 2 карты |*||*|"
 
-  puts "Напишите 1 что бы взять еще карту, 2 что-бы продолжить игру"
-
+  puts 'Напишите 1 что бы взять еще карту, 2 что-бы продолжить игру'
   num = gets.chomp.to_i
-
   while num == 1
     player.add_card(game_pack.give_cart)
-    #2each
-    player.cards.each { |c| print "|" + c + "|"}
-    puts "\nCумма ваших очков #{player.points}"
-    #5if_else
+
+    puts player.cards
+    puts "Cумма ваших очков #{player.points}"
+
     if player.lose?
       num = 0
     else
-      puts "Напишите 1 что бы взять еще карту, 2 что-бы продолжить игру"
+      puts 'Напишите 1 что бы взять еще карту, 2 что-бы продолжить игру'
       num = gets.chomp.to_i
     end
   end
 
-  #5if_else
   if player.lose?
-    puts "Вы проиграли"
-    p "-" * 20
+    puts "Игрок #{player.name} проиграл"
     next
   end
-   p "-" * 20
-   puts "Игра перешла к дилерру"
 
-   #2each
-   diler.cards.each{ |c| print "|" + c + "|"}
-   puts "\nCумма очков дилера #{diler.points}"
+  puts "Игра перешла к #{diler.name}"
+  puts diler.cards
 
   while diler.points <= 16
-    puts "Сумма очков дилера > #{diler.points}. Он берет еще кaрту"
+    puts "Сумма очков #{diler.name} = #{diler.points}. Он берет еще кaрту"
     diler.add_card(game_pack.give_cart)
-    #2each
-    diler.cards.each{ |c| print "|" + c + "|"}
+    puts diler.cards
   end
 
-  #5if_else
   if diler.lose?
-    puts "Дилер проиграл. Cумма его очков:#{diler.points}"
-    #balance
+    puts "#{diler.name} проиграл. Cумма его очков:#{diler.points}"
     player.balance += 20
 
-  p "-" * 20
   elsif diler.points < player.points
-    puts "Ура вы выйграли! ДИЛЕР проиграл!  Очки дилера:#{diler.points}. Очки игрока:#{player.points}"
-    #balance
+    puts "Ура #{player.new} выйграли! #{diler.name} проиграл! Очки #{diler.name}:#{diler.points} --- очки #{player.name}:#{player.points}"
     player.balance += 20
 
   elsif diler.points > player.points
-    puts "Дилер выйграл! Очки дилера:#{diler.points}.  Очки игрок:#{player.points}"
+    puts "#{diler.name} выйграл! Его очки:#{diler.points} --- очки #{player.name}:#{player.points}"
 
   elsif diler.points == player.points
-    puts "Ничья"
-    #balance
+    puts 'Ничья'
     player.balance += 10
   end
-
-  p "-" * 20
 end

@@ -1,6 +1,6 @@
 module Point
   def games_point(card, current_points)
-    if card[0] == "A"
+    if card.value == 'A'
       sum = current_points + 10
 
       if sum > 21
@@ -8,10 +8,10 @@ module Point
       else
         10
       end
-    elsif card.to_i.zero?
+    elsif card.value.to_i.zero?
       10
     else
-      card.to_i
+      card.value.to_i
     end
   end
 end
